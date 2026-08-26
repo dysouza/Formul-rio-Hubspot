@@ -4,173 +4,324 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulário CostDrivers</title>
-  
+
   <style>
-    /* Reset básico e tipografia */
-    * {
-      box-sizing: border-box;
+    /*
+     * Este formulário usa o editor NOVO do HubSpot (Forms V4), que renderiza
+     * com classes `hsfc-*`. Os seletores legacy (.hs-form, .hs-input, .hs-button,
+     * .hs-error-msgs) são do editor antigo e não existem neste markup.
+     *
+     * Paleta extraída do tema oficial do site (gepcostdrivers/geral.css),
+     * onde --azul-escuro: #042373 é a variável de marca declarada.
+     */
+
+    :root {
+      /* Azuis institucionais */
+      --cd-azul-escuro:   #042373;
+      --cd-azul-marinho:  #001e76;
+      --cd-azul:          #0047af;
+      --cd-azul-hover:    #064bb1;
+      --cd-azul-brilho:   #00a3ff;
+
+      /* Cianos de destaque */
+      --cd-ciano:         #65e2f9;
+      --cd-ciano-claro:   #96e1f8;
+
+      /* Sinalização */
+      --cd-erro:          #ff6365;
+      --cd-sucesso:       #54ba5f;
+
+      /* Neutros */
+      --cd-texto:         #171714;
+      --cd-texto-suave:   #5b6472;
+      --cd-borda:         #e4e4e4;
+      --cd-fundo-campo:   #f6f6f6;
+      --cd-branco:        #ffffff;
     }
+
+    * { box-sizing: border-box; }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background-color: #25313d;
-      padding: 40px 16px;
+      background: linear-gradient(160deg, var(--cd-azul-escuro) 0%, var(--cd-azul-marinho) 55%, #011049 100%);
+      background-attachment: fixed;
+      padding: 48px 16px;
       margin: 0;
+      color: var(--cd-texto);
     }
 
-    /* Container do Formulário */
-    .hs-form-html,
-    .hs-form {
-      max-width: 560px;
+    /* ---- Container (card) ---- */
+    .hs-form-html {
+      position: relative;
+      max-width: 580px;
       margin: 0 auto;
-      background: #ffffff;
-      padding: 40px 36px;
-      border-radius: 12px;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 10px 25px -5px rgba(13, 37, 56, 0.08), 0 8px 10px -6px rgba(13, 37, 56, 0.04);
+      background: var(--cd-branco);
+      padding: 44px 40px 40px;
+      border-radius: 14px;
+      border: 1px solid var(--cd-borda);
+      box-shadow: 0 18px 40px -12px rgba(4, 35, 115, 0.45),
+                  0 6px 14px -8px rgba(0, 30, 118, 0.30);
+      overflow: hidden;
     }
 
-    /* Espaçamento entre os campos */
-    .hs-form-field,
-    .hs-fieldtype-text,
-    .hs-fieldtype-select {
-      margin-bottom: 22px;
+    /* Faixa de marca no topo do card */
+    .hs-form-html::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: linear-gradient(90deg,
+        var(--cd-azul-marinho) 0%,
+        var(--cd-azul) 40%,
+        var(--cd-azul-brilho) 75%,
+        var(--cd-ciano) 100%);
     }
 
-    /* Rótulos dos campos (Labels) */
-    .hs-form-html label,
-    .hs-form label {
-      display: block;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: #0d2538; /* Azul escuro CostDrivers */
+    .hs-form-html .hsfc-FormWrapper,
+    .hs-form-html .hsfc-Form,
+    .hs-form-html .hsfc-Step__Content {
+      background: transparent;
+      padding: 0;
+      border: none;
+      box-shadow: none;
+    }
+
+    /* ---- Cabeçalho ---- */
+    .hs-form-html .hsfc-Heading {
+      color: var(--cd-azul-escuro);
+      font-size: 1.4rem;
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
       margin-bottom: 6px;
     }
 
-    .hs-form-required {
-      color: #ef4444;
+    .hs-form-html .hsfc-RichText {
+      color: var(--cd-texto-suave);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .hs-form-html .hsfc-RichText a {
+      color: var(--cd-azul);
+      font-weight: 500;
+      text-underline-offset: 2px;
+    }
+
+    .hs-form-html .hsfc-RichText a:hover { color: var(--cd-azul-brilho); }
+
+    /* ---- Espaçamento entre campos ---- */
+    .hs-form-html .hsfc-Row { margin-bottom: 22px; }
+
+    /* ---- Labels ---- */
+    .hs-form-html .hsfc-FieldLabel {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--cd-azul-escuro);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .hs-form-html .hsfc-FieldLabel__RequiredIndicator {
+      color: var(--cd-erro);
       margin-left: 2px;
     }
-    /* Customização do Textarea do HubSpot (hsfc-TextareaInput) */
-.hs-form-html textarea,
-.hs-form textarea,
-textarea.hsfc-TextareaInput,
-textarea[data-hsfc-id="TextareaInput"] {
-  width: 100% !important;
-  min-height: 120px !important; /* Altura ideal confortável para digitação */
-  padding: 14px 16px !important;
-  font-family: inherit !important;
-  font-size: 0.95rem !important;
-  line-height: 1.5 !important;
-  color: #1e293b !important;
-  background-color: #f8fafc !important;
-  border: 1.5px solid #cbd5e1 !important;
-  border-radius: 8px !important;
-  outline: none !important;
-  resize: vertical !important; /* Permite o usuário esticar apenas na vertical */
-  box-sizing: border-box !important;
-  transition: all 0.2s ease-in-out !important;
-}
 
-/* Efeito de Foco no Textarea */
-textarea.hsfc-TextareaInput:focus,
-textarea[data-hsfc-id="TextareaInput"]:focus {
-  background-color: #ffffff !important;
-  border-color: #0077c8 !important; /* Azul/Ciano CostDrivers */
-  box-shadow: 0 0 0 4px rgba(0, 119, 200, 0.15) !important;
-}
+    .hs-form-html .hsfc-FieldDescription {
+      font-size: 0.8rem;
+      color: var(--cd-texto-suave);
+      margin-bottom: 6px;
+    }
 
-/* Estado de Erro de Validação (quando aria-invalid="true") */
-textarea.hsfc-TextareaInput[aria-invalid="true"],
-textarea[data-hsfc-id="TextareaInput"][aria-invalid="true"] {
-  border-color: #dc2626 !important;
-  background-color: #fef2f2 !important;
-}
-
-textarea.hsfc-TextareaInput[aria-invalid="true"]:focus,
-textarea[data-hsfc-id="TextareaInput"][aria-invalid="true"]:focus {
-  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.15) !important;
-}
-    /* Estilo dos Inputs, Selects e Textareas */
-    .hs-form-html input[type="text"],
-    .hs-form-html input[type="email"],
-    .hs-form-html input[type="tel"],
-    .hs-form-html input[type="number"],
-    .hs-form-html select,
-    .hs-form-html textarea,
-    .hs-input {
+    /* ---- Inputs, textarea e dropdown ---- */
+    .hs-form-html .hsfc-TextInput,
+    .hs-form-html .hsfc-TextareaInput,
+    .hs-form-html .hsfc-DropdownInput,
+    .hs-form-html .hsfc-DateInput,
+    .hs-form-html .hsfc-PhoneInput {
       width: 100%;
       padding: 12px 16px;
+      font-family: inherit;
       font-size: 0.95rem;
-      color: #1e293b;
-      background-color: #f8fafc;
-      border: 1.5px solid #cbd5e1;
+      line-height: 1.5;
+      color: var(--cd-texto);
+      background-color: var(--cd-fundo-campo);
+      border: 1.5px solid var(--cd-borda);
       border-radius: 8px;
       outline: none;
-      transition: all 0.2s ease-in-out;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     }
 
-    /* Efeito de foco (Highlight Ciano / Azul Tecnologia) */
-    .hs-form-html input:focus,
-    .hs-form-html select:focus,
-    .hs-form-html textarea:focus,
-    .hs-input:focus {
-      background-color: #ffffff;
-      border-color: #0077c8;
-      box-shadow: 0 0 0 4px rgba(0, 119, 200, 0.15);
+    .hs-form-html .hsfc-TextInput:hover,
+    .hs-form-html .hsfc-TextareaInput:hover,
+    .hs-form-html .hsfc-DropdownInput:hover {
+      border-color: #c7d4e6;
     }
 
-    /* Placeholder */
-    .hs-input::placeholder {
-      color: #94a3b8;
+    .hs-form-html .hsfc-TextareaInput {
+      min-height: 120px;
+      padding: 14px 16px;
+      resize: vertical;
     }
 
-    /* Mensagens de Erro de Validação */
-    .hs-error-msgs,
-    ul.hs-error-msgs {
-      list-style: none;
-      padding: 0;
-      margin: 6px 0 0 0;
+    /* O dropdown do HubSpot é um botão, não um <select> */
+    .hs-form-html .hsfc-DropdownInput {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+      cursor: pointer;
     }
 
-    .hs-error-msgs label,
-    .hs-error-msgs li {
-      font-size: 0.8rem;
-      color: #dc2626 !important;
-      font-weight: 500;
+    .hs-form-html .hsfc-DropdownInput__Caret { color: var(--cd-azul); }
+
+    /* ---- Foco ---- */
+    .hs-form-html .hsfc-TextInput:focus,
+    .hs-form-html .hsfc-TextareaInput:focus,
+    .hs-form-html .hsfc-DropdownInput:focus,
+    .hs-form-html .hsfc-DateInput:focus,
+    .hs-form-html .hsfc-PhoneInput:focus-within {
+      background-color: var(--cd-branco);
+      border-color: var(--cd-azul-brilho);
+      box-shadow: 0 0 0 4px rgba(0, 163, 255, 0.18);
     }
 
-    /* Botão de Envio (Gradiente Azul GEP) */
-    .hs-form-html input[type="submit"],
-    .hs-form-html button[type="submit"],
-    .hs-button {
+    .hs-form-html ::placeholder { color: #9aa4b2; }
+
+    /* ---- Lista de opções do dropdown ---- */
+    .hs-form-html .hsfc-DropdownOptions {
+      background: var(--cd-branco);
+      border: 1.5px solid var(--cd-borda);
+      border-radius: 8px;
+      box-shadow: 0 12px 28px rgba(4, 35, 115, 0.18);
+      overflow: hidden;
+    }
+
+    .hs-form-html .hsfc-DropdownOptions__Search {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--cd-borda);
+    }
+
+    .hs-form-html .hsfc-DropdownOptions__List__ListItem {
+      padding: 10px 16px;
+      font-size: 0.92rem;
+      color: var(--cd-texto);
+      cursor: pointer;
+    }
+
+    .hs-form-html .hsfc-DropdownOptions__List__ListItem:hover {
+      background: linear-gradient(90deg, rgba(101, 226, 249, 0.22) 0%, rgba(0, 163, 255, 0.10) 100%);
+      color: var(--cd-azul-escuro);
+    }
+
+    /* ---- Upload de arquivo ---- */
+    .hs-form-html .hsfc-FileInput,
+    .hs-form-html .hsfc-FileInputAsync {
       width: 100%;
-      padding: 14px 24px;
+      padding: 14px 16px;
+      font-size: 0.9rem;
+      color: var(--cd-texto-suave);
+      background-color: rgba(150, 225, 248, 0.10);
+      border: 1.5px dashed var(--cd-ciano-claro);
+      border-radius: 8px;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .hs-form-html .hsfc-FileInput:hover,
+    .hs-form-html .hsfc-FileInputAsync:hover {
+      border-color: var(--cd-azul-brilho);
+      background-color: rgba(0, 163, 255, 0.07);
+    }
+
+    .hs-form-html .hsfc-FileInputAsync__Progress { background-color: var(--cd-azul-brilho); }
+    .hs-form-html .hsfc-FileInputAsync__CompleteIcon { color: var(--cd-sucesso); }
+
+    /* ---- Erros de validação ---- */
+    .hs-form-html .hsfc-FieldFooter {
+      font-size: 0.8rem;
+      color: var(--cd-erro);
+      font-weight: 500;
+      margin-top: 6px;
+    }
+
+    .hs-form-html .hsfc-ErrorAlert {
+      font-size: 0.85rem;
+      color: #b3262d;
+      font-weight: 500;
+      background-color: #fff2f2;
+      border: 1px solid rgba(255, 99, 101, 0.45);
+      border-left: 4px solid var(--cd-erro);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+
+    .hs-form-html [aria-invalid="true"] {
+      border-color: var(--cd-erro);
+      background-color: #fff2f2;
+    }
+
+    .hs-form-html [aria-invalid="true"]:focus {
+      box-shadow: 0 0 0 4px rgba(255, 99, 101, 0.18);
+    }
+
+    /* ---- Botão de envio ---- */
+    .hs-form-html .hsfc-NavigationRow { margin-top: 10px; }
+    .hs-form-html .hsfc-NavigationRow__Buttons { width: 100%; }
+
+    .hs-form-html .hsfc-Button {
+      width: 100%;
+      padding: 15px 24px;
+      font-family: inherit;
       font-size: 1rem;
       font-weight: 600;
-      color: #ffffff;
-      background: linear-gradient(135deg, #0d2538 0%, #005691 100%);
+      letter-spacing: 0.01em;
+      color: var(--cd-branco);
+      background: linear-gradient(135deg, var(--cd-azul-marinho) 0%, var(--cd-azul) 55%, var(--cd-azul-brilho) 100%);
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 8px;
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 12px rgba(13, 37, 56, 0.18);
+      transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+      box-shadow: 0 6px 16px rgba(0, 71, 175, 0.32);
     }
 
-    .hs-form-html input[type="submit"]:hover,
-    .hs-form-html button[type="submit"]:hover,
-    .hs-button:hover {
-      background: linear-gradient(135deg, #13334d 0%, #0077c8 100%);
-      box-shadow: 0 6px 18px rgba(0, 119, 200, 0.28);
+    .hs-form-html .hsfc-Button:hover {
+      background: linear-gradient(135deg, var(--cd-azul) 0%, var(--cd-azul-brilho) 60%, var(--cd-ciano) 100%);
+      box-shadow: 0 8px 22px rgba(0, 163, 255, 0.40);
       transform: translateY(-1px);
     }
 
-    .hs-form-html input[type="submit"]:active,
-    .hs-form-html button[type="submit"]:active,
-    .hs-button:active {
+    .hs-form-html .hsfc-Button:focus-visible {
+      outline: 3px solid var(--cd-ciano);
+      outline-offset: 2px;
+    }
+
+    .hs-form-html .hsfc-Button:active {
       transform: translateY(0);
-      box-shadow: 0 2px 6px rgba(13, 37, 56, 0.2);
-      
+      box-shadow: 0 3px 8px rgba(4, 35, 115, 0.28);
+    }
+
+    .hs-form-html .hsfc-Button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* ---- Mensagem pós-envio ---- */
+    .hs-form-html .hsfc-PostSubmit {
+      color: var(--cd-azul-escuro);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    /* ---- Responsivo ---- */
+    @media (max-width: 600px) {
+      body { padding: 24px 12px; }
+      .hs-form-html { padding: 32px 22px 28px; border-radius: 12px; }
+      .hs-form-html .hsfc-Heading { font-size: 1.2rem; }
     }
   </style>
 </head>
